@@ -1,9 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://e22x1key2cq6"]
+[gd_scene load_steps=10 format=3 uid="uid://e22x1key2cq6"]
 
 [ext_resource type="PackedScene" uid="uid://d0ooqckrilwbo" path="res://entites/pirateship/Pirate Ship.glb" id="1_n5tlo"]
 [ext_resource type="PackedScene" uid="uid://dj1otug1ddj8q" path="res://entites/pirateship/Propeller.glb" id="2_2tn0b"]
 [ext_resource type="Script" uid="uid://boiae2b1fkasv" path="res://entites/pirateship/pirate_ship.gd" id="2_6exlf"]
-[ext_resource type="AudioStream" uid="uid://cqjy7svprxv2b" path="res://sounds/pirate_ship/cannon.mp3" id="5_b2ktu"]
 
 [sub_resource type="Animation" id="Animation_b2ktu"]
 length = 0.001
@@ -44,6 +43,7 @@ _data = {
 
 [sub_resource type="Animation" id="Animation_im5va"]
 length = 0.001
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -110,10 +110,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0145588, -0.187727, -0.211
 
 [node name="ShotTimer" type="Timer" parent="Pirate Ship"]
 wait_time = 5.0
-
-[node name="CannonShot" type="AudioStreamPlayer3D" parent="Pirate Ship"]
-stream = ExtResource("5_b2ktu")
-volume_db = 5.0
 
 [node name="ShipAnimation" type="AnimationPlayer" parent="."]
 libraries = {

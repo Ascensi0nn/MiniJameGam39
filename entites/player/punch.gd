@@ -20,18 +20,22 @@ func attack() -> void:
 	
 	var speed = 10
 	for collider in hit_area.get_overlapping_bodies():
+		if collider is CharacterBody3D:
+			if collider is Player:
+				continue
+			var body = collider as CharacterBody3D
+			var direction:Vector3 = body.global_position - player.global_position + Vector3(0, 1, 0)
+			var distance = body.global_position.distance_to(player.global_position)
+			body.velocity = direction * speed / distance
+		if collider.has_method("on_hit"):
+			collider.on_hit()
 		if collider is RigidBody3D:
 			var body = collider as RigidBody3D
 			var direction:Vector3 = body.global_position - player.global_position + Vector3(0, 1, 0)
 			var distance = body.global_position.distance_to(player.global_position)
 			
 			body.apply_impulse(direction * speed / distance)
-		elif collider.has_method("on_hit"):
-			var body = collider as CharacterBody3D
-			collider.on_hit()
-			var direction:Vector3 = body.global_position - player.global_position + Vector3(0, 1, 0)
-			var distance = body.global_position.distance_to(player.global_position)
-			body.velocity = direction * speed / distance
+		
 	
 	can_attack = false
 	hit_timer.start()

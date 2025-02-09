@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://phtn6kctu34r"]
+
+[ext_resource type="PackedScene" uid="uid://bma7238jujdp" path="res://world_objects/other/Bucket.glb" id="1_cnnsc"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_8tdft"]
+height = 0.433838
+radius = 0.381348
+
+[node name="MoveableBucket" type="RigidBody3D"]
+
+[node name="Root Scene" parent="." instance=ExtResource("1_cnnsc")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.220825, 0)
+shape = SubResource("CylinderShape3D_8tdft")

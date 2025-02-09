@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://cmvlaykdykwy7"]
+[gd_scene load_steps=48 format=3 uid="uid://cmvlaykdykwy7"]
 
 [ext_resource type="Script" uid="uid://cae6g44xbirbd" path="res://entites/player/player.gd" id="1_pbn7k"]
 [ext_resource type="Script" uid="uid://d0sfm0yyxwr3v" path="res://entites/player/states/state_machine.gd" id="2_gqtyk"]
@@ -21,6 +21,7 @@
 [ext_resource type="AudioStream" uid="uid://cl0qt8a7fx5al" path="res://sounds/hurt/explosion4.wav" id="14_2b1ds"]
 [ext_resource type="AudioStream" uid="uid://k426cvgjvha8" path="res://sounds/hit_ground/explosion1.wav" id="15_iot4v"]
 [ext_resource type="AudioStream" uid="uid://cxb3vl6kelct1" path="res://sounds/hit_ground/explosion2.wav" id="16_43lnm"]
+[ext_resource type="Script" uid="uid://cjejojq1dfju4" path="res://entites/player/score.gd" id="21_d02n1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0rwas"]
 albedo_color = Color(0.645045, 0.489652, 0.279497, 1)
@@ -132,6 +133,10 @@ random_volume_offset_db = 0.5
 streams_count = 2
 stream_0/stream = ExtResource("15_iot4v")
 stream_1/stream = ExtResource("16_43lnm")
+
+[sub_resource type="LabelSettings" id="LabelSettings_n12ea"]
+font_size = 50
+font_color = Color(0.796243, 0.796243, 0.796243, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ki8uu"]
 
@@ -309,6 +314,20 @@ draw_pass_1 = SubResource("CylinderMesh_cccdf")
 stream = SubResource("AudioStreamRandomizer_n12ea")
 
 [node name="Timer" type="Timer" parent="GroundPoundNode"]
+
+[node name="Score" type="Label" parent="."]
+z_index = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -132.0
+offset_bottom = 75.0
+grow_horizontal = 0
+text = "0"
+label_settings = SubResource("LabelSettings_n12ea")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("21_d02n1")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
 z_index = 1

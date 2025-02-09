@@ -23,6 +23,9 @@ func exit() -> void:
 	
 func process_frame(_delta:float) -> ProjectileEnemyState:
 	if timeout:
+		if randi_range(1, 2) == 1:
+			parent.die()
+			return null
 		return following_state
 	return null
 

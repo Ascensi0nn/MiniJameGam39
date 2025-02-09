@@ -18,7 +18,6 @@ extends CharacterBody3D
 @export var sprint_acc:float
 @export var sprint_dec:float
 @export var uppercut_spd:float
-@export var health:float = 3
 @export_category("Other")
 @export var camera_sens:float
 
@@ -28,7 +27,7 @@ var can_attack:bool = true
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	healthbar.init_health(100)
+	healthbar.init_health(GameManager.get_health())
 	state_machine.init(self)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -73,13 +72,13 @@ func take_damage():
 	can_take_damage = false
 	iframes_timer.start()
 	
-	health -= 1
-	healthbar.health = health
+	GameManager.reduce_health()
+	healthbar.health = GameManager.get_health()
 	
 	Trauma.on_player_damaged()
 	hurt_audio.play()
 	
-	if health <= 0 and state_machine.current_state != $"StateMachine/Knocked Out" and state_machine.current_state != $"StateMachine/Dead":
+	if GameManager.get_health() <= 0 and state_machine.current_state != $"StateMachine/Knocked Out" and state_machine.current_state != $"StateMachine/Dead":
 		state_machine.change_state($"StateMachine/Knocked Out")
 
 func _on_i_frames_timeout():

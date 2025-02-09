@@ -23,6 +23,9 @@ func exit() -> void:
 	
 func process_frame(_delta:float) -> EnemyState:
 	if timeout:
+		if randi_range(1, 2) == 1:
+			parent.die()
+			return null
 		return aggro_state
 	return null
 

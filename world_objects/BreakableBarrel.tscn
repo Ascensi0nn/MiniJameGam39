@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=3 uid="uid://ek2pjs0fwiy5"]
+
+[ext_resource type="PackedScene" uid="uid://c5fi4hd16fwvv" path="res://world_objects/other/Barrel.glb" id="1_q5gmn"]
+[ext_resource type="Script" uid="uid://bkjgg7amp5jer" path="res://world_objects/breakable_barrel.gd" id="1_wp2ry"]
+[ext_resource type="AudioStream" uid="uid://cfwkil3p7kgs6" path="res://sounds/break barrel/explosion.wav" id="3_ugqx3"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_jl8qu"]
+height = 0.985718
+
+[sub_resource type="Curve" id="Curve_ugqx3"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.781132, 0.989748), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_3yy2g"]
+curve = SubResource("Curve_ugqx3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dwd2s"]
+lifetime_randomness = 0.46
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_3yy2g")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v71b8"]
+albedo_color = Color(0.324325, 0.249611, 0.124854, 1)
+emission_enabled = true
+emission = Color(0.0596881, 0.0338412, 0.00416333, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7rr0o"]
+material = SubResource("StandardMaterial3D_v71b8")
+top_radius = 0.1
+bottom_radius = 0.0
+height = 1.5
+radial_segments = 8
+rings = 2
+
+[node name="BreakableBarrel" type="RigidBody3D"]
+script = ExtResource("1_wp2ry")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.497986, 0)
+shape = SubResource("CylinderShape3D_jl8qu")
+
+[node name="Root Scene" parent="." instance=ExtResource("1_q5gmn")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0143871, 0)
+emitting = false
+amount = 12
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_dwd2s")
+draw_pass_1 = SubResource("CylinderMesh_7rr0o")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_ugqx3")
+
+[connection signal="finished" from="AudioStreamPlayer3D" to="." method="_on_audio_stream_player_3d_finished"]

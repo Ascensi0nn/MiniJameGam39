@@ -8,6 +8,11 @@ extends CharacterBody3D
 @export var damage:float
 var player:Player
 
+var gem1:PackedScene = preload("res://world_objects/other/GemBlue.tscn")
+var gem2:PackedScene = preload("res://world_objects/other/GemGreen.tscn")
+var gem3:PackedScene = preload("res://world_objects/other/GemPink.tscn")
+var pickup_arr = [gem1, gem2, gem3]
+
 @export var walk_spd = 3
 @export var walk_acc = 10
 
@@ -36,6 +41,17 @@ func rotate_enemy_towards_player():
 	var player_pos:Vector2 = Vector2(player.global_position.x, player.global_position.z)
 	var direction:Vector2 = enemy_pos - player_pos
 	self.rotation.y = lerp_angle(self.rotation.y, atan2(direction.x, direction.y), 0.2)
+
+func die():
+	GameManager.add_score()
+	# drop gem
+	var pickup = pickup_arr[randi_range(0, len(pickup_arr) - 1)].instantiate()
+	get_tree().get_root().add_child(pickup)
+	pickup.global_position = self.global_position
+	pickup.apply_impulse(10 * Vector3(0, 1, 0))
+	
+	# queue_free
+	self.queue_free()
 
 func on_hit():
 	state_machine.change_state($StateMachine/Stunned)

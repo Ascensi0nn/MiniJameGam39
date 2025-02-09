@@ -1,0 +1,43 @@
+[gd_scene load_steps=10 format=3 uid="uid://d4hgfhkipqhlg"]
+
+[ext_resource type="Script" uid="uid://b1cw0go2al34e" path="res://world_objects/other/pickup.gd" id="1_hyd5l"]
+[ext_resource type="AudioStream" uid="uid://dx04ujkcgka30" path="res://sounds/coin/pickupCoin (1).wav" id="3_khxna"]
+[ext_resource type="AudioStream" uid="uid://bvoosup1kxup0" path="res://sounds/coin/pickupCoin (2).wav" id="4_c2g5j"]
+[ext_resource type="AudioStream" uid="uid://b23utrha1bsq" path="res://sounds/coin/pickupCoin (3).wav" id="5_yuylb"]
+[ext_resource type="AudioStream" uid="uid://61ttcj67cleh" path="res://sounds/coin/pickupCoin.wav" id="6_fomrj"]
+[ext_resource type="PackedScene" uid="uid://72je6ui7w0eh" path="res://world_objects/other/Gem Pink.glb" id="6_hyd5l"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_b8ebt"]
+radius = 1.535
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2gyj0"]
+size = Vector3(0.421085, 0.721909, 0.425419)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ldxpb"]
+playback_mode = 1
+streams_count = 4
+stream_0/stream = ExtResource("3_khxna")
+stream_1/stream = ExtResource("4_c2g5j")
+stream_2/stream = ExtResource("5_yuylb")
+stream_3/stream = ExtResource("6_fomrj")
+
+[node name="GemBlue" type="RigidBody3D"]
+script = ExtResource("1_hyd5l")
+type = "GEM"
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_b8ebt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000616133, -0.00119784, 0.00187113)
+shape = SubResource("BoxShape3D_2gyj0")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamRandomizer_ldxpb")
+
+[node name="Root Scene" parent="." instance=ExtResource("6_hyd5l")]
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="finished" from="AudioStreamPlayer3D" to="." method="_on_audio_stream_player_3d_finished"]

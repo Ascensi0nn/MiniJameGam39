@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cmvlaykdykwy7" path="res://entites/player/Player.tscn" id="1_o08eu"]
 [ext_resource type="Texture2D" uid="uid://78rlf45x8knc" path="res://textures/sky/sky_texture.exr" id="3_scak1"]
-[ext_resource type="PackedScene" uid="uid://ek2pjs0fwiy5" path="res://world_objects/MoveableBox.tscn" id="4_o08eu"]
+[ext_resource type="PackedScene" uid="uid://ek2pjs0fwiy5" path="res://world_objects/BreakableBarrel.tscn" id="4_o08eu"]
 [ext_resource type="PackedScene" uid="uid://bhq4svjfk37lc" path="res://worlds/ArenaStatic.tscn" id="4_scmvn"]
 [ext_resource type="Shader" uid="uid://uebr5rlcilxo" path="res://worlds/ArenaScene.gdshader" id="6_s75ll"]
 [ext_resource type="Script" uid="uid://dptwabjae6lic" path="res://entites/player/shader_pixelation.gd" id="7_wdydg"]
