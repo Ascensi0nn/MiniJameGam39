@@ -12,7 +12,7 @@ func explode() -> void:
 	var node = $Node3D
 	
 	node.get_parent().remove_child(node)
-	get_tree().root.add_child(node)
+	get_tree().current_scene.add_child(node)
 	node.global_position = self.global_position
 	
 	for child in node.get_children():

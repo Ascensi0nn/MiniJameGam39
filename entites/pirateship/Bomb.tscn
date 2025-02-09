@@ -13,6 +13,7 @@ radius = 0.655
 radius = 3.195
 
 [node name="Bomb" type="RigidBody3D" groups=["Projectile"]]
+mass = 0.4
 script = ExtResource("1_uotq2")
 
 [node name="Mesh" parent="." instance=ExtResource("3_lx6mq")]

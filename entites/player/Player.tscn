@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://cmvlaykdykwy7"]
+[gd_scene load_steps=46 format=3 uid="uid://cmvlaykdykwy7"]
 
 [ext_resource type="Script" uid="uid://cae6g44xbirbd" path="res://entites/player/player.gd" id="1_pbn7k"]
 [ext_resource type="Script" uid="uid://d0sfm0yyxwr3v" path="res://entites/player/states/state_machine.gd" id="2_gqtyk"]
@@ -47,6 +47,9 @@ stream_2/stream = ExtResource("14_2b1ds")
 [sub_resource type="LabelSettings" id="LabelSettings_d02n1"]
 font_size = 150
 font_color = Color(0.89059, 0.89059, 0.89059, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_diqxy"]
+font_size = 61
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jjpnm"]
 playback_mode = 1
@@ -227,7 +230,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("13_d02n1")
 
-[node name="Label" type="Label" parent="StateMachine/Dead/Control"]
+[node name="Surrounded" type="Label" parent="StateMachine/Dead/Control"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -242,6 +245,24 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "SURROUNDED"
 label_settings = SubResource("LabelSettings_d02n1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FinalScore" type="Label" parent="StateMachine/Dead/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -315.0
+offset_top = 96.0
+offset_right = 315.0
+offset_bottom = 183.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Final Score: 10000000"
+label_settings = SubResource("LabelSettings_diqxy")
 horizontal_alignment = 1
 vertical_alignment = 1
 

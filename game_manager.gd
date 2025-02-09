@@ -26,15 +26,19 @@ func reset():
 func clear_scene():
 	Engine.time_scale = 1
 	for enemy in get_tree().get_nodes_in_group("Enemy"):
+		enemy.get_parent().remove_child(enemy)
 		enemy.queue_free()
 	
 	for projectile in get_tree().get_nodes_in_group("Projectile"):
+		projectile.get_parent().remove_child(projectile)
 		projectile.queue_free()
 		
 	for pickup in get_tree().get_nodes_in_group("Pickup"):
+		pickup.get_parent().remove_child(pickup)
 		pickup.queue_free()
 		
 	for player in get_tree().get_nodes_in_group("Player"):
+		player.get_parent().remove_child(player)
 		player.queue_free()
 		
 	player_score = 0

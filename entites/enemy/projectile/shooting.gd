@@ -32,7 +32,7 @@ func process_physics(delta:float) -> ProjectileEnemyState:
 	
 	if can_shoot:
 		var ball = cannon_ball.instantiate()
-		get_tree().root.add_child(ball)
+		get_tree().current_scene.add_child(ball)
 		ball.global_position = parent.global_position
 		
 		var shot_direction = (parent.player.global_position - parent.global_position).normalized()

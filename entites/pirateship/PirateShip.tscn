@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://e22x1key2cq6"]
+[gd_scene load_steps=15 format=3 uid="uid://e22x1key2cq6"]
 
 [ext_resource type="PackedScene" uid="uid://d0ooqckrilwbo" path="res://entites/pirateship/Pirate Ship.glb" id="1_n5tlo"]
 [ext_resource type="PackedScene" uid="uid://dj1otug1ddj8q" path="res://entites/pirateship/Propeller.glb" id="2_2tn0b"]
@@ -40,6 +40,34 @@ _data = {
 &"RESET": SubResource("Animation_b2ktu"),
 &"rotate": SubResource("Animation_6exlf")
 }
+
+[sub_resource type="Curve" id="Curve_2tn0b"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.867925, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_6exlf"]
+curve = SubResource("Curve_2tn0b")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b2ktu"]
+lifetime_randomness = 0.2
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, 0, 1)
+initial_velocity_min = 3.0
+initial_velocity_max = 6.0
+gravity = Vector3(5, -9.8, 0)
+scale_curve = SubResource("CurveTexture_6exlf")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gxgoh"]
+transparency = 1
+albedo_color = Color(0.901961, 0.901961, 0.901961, 0.737255)
+
+[sub_resource type="SphereMesh" id="SphereMesh_im5va"]
+material = SubResource("StandardMaterial3D_gxgoh")
+radius = 1.0
+height = 2.0
+radial_segments = 8
+rings = 4
 
 [sub_resource type="Animation" id="Animation_im5va"]
 length = 0.001
@@ -93,6 +121,12 @@ libraries = {
 &"": SubResource("AnimationLibrary_gxgoh")
 }
 autoplay = "rotate"
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Pirate Ship/Propeller"]
+amount = 15
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_b2ktu")
+draw_pass_1 = SubResource("SphereMesh_im5va")
 
 [node name="Markers" type="Node3D" parent="Pirate Ship"]
 

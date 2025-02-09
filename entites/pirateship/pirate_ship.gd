@@ -36,11 +36,11 @@ func shoot_cannon():
 	
 	var object = arr[randi_range(0, len(arr) - 1)].instantiate()
 	if object is RigidBody3D:
-		get_tree().root.add_child(object)
+		get_tree().current_scene.add_child(object)
 		object.global_position = cannon_position
 		object.apply_impulse(shot_direction * force)
 	elif object is CharacterBody3D:
-		get_tree().get_root().add_child(object)
+		get_tree().current_scene.add_child(object)
 		object.global_position = cannon_position
 		object.velocity = shot_direction * force
 	
