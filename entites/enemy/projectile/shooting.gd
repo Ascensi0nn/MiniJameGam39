@@ -3,7 +3,7 @@ extends ProjectileEnemyState
 @onready var timer = $Timer
 var can_shoot:bool = false
 var times_shot:int
-var cannon_ball:PackedScene = preload("res://entites/pirateship/CannonBall.tscn")
+var cannon_ball:PackedScene = preload("res://entites/pirateship/Bomb.tscn")
 
 @export var following_state:ProjectileEnemyState
 
@@ -13,6 +13,7 @@ func enter() -> void:
 	parent.velocity = Vector3.ZERO
 	times_shot = 0
 	timer.start()
+	can_shoot = false
 	
 func exit() -> void:
 	super()
@@ -24,7 +25,7 @@ func process_frame(_delta:float) -> ProjectileEnemyState:
 	return null
 
 func process_physics(delta:float) -> ProjectileEnemyState:
-	parent.look_at(parent.player.global_position)
+	parent.rotate_enemy_towards_player()
 	
 	if can_shoot:
 		var ball = cannon_ball.instantiate()
@@ -37,6 +38,8 @@ func process_physics(delta:float) -> ProjectileEnemyState:
 		
 		can_shoot = false
 		times_shot += 1
+		
+		parent.anim_player.play("Throw")
 	
 	if not parent.is_on_floor():
 		parent.velocity += parent.get_gravity() * delta

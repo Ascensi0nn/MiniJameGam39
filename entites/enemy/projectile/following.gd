@@ -5,7 +5,6 @@ var target_reached:bool = false
 
 func enter() -> void:
 	super()
-	parent.can_damage_player = true
 	target_reached = false
 	
 func exit() -> void:
@@ -19,6 +18,10 @@ func process_frame(_delta:float) -> ProjectileEnemyState:
 
 func process_physics(delta:float) -> ProjectileEnemyState:
 	parent.nav.target_position = parent.player.global_position
+	parent.rotate_enemy_towards_velocity()
+	
+	if not parent.anim_player.is_playing():
+		parent.anim_player.play("Walk")
 	
 	var direction = parent.nav.get_next_path_position() - parent.global_position
 	direction = direction.normalized()

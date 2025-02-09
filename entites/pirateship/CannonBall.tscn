@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://0dx5102mgk3u" path="res://entites/pirateship/cannon_ball.gd" id="1_0lpj5"]
 [ext_resource type="PackedScene" uid="uid://s21nvwy2y6fd" path="res://particles/Explosion.tscn" id="2_chor1"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_85v03"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0lpj5"]
 albedo_color = Color(0.129558, 0.129558, 0.129558, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_w41am"]
-material = SubResource("StandardMaterial3D_85v03")
+material = SubResource("StandardMaterial3D_0lpj5")
 radial_segments = 8
 rings = 8
 

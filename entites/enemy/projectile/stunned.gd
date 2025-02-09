@@ -8,26 +8,25 @@ var random_rotation:Vector3
 
 func enter() -> void:
 	super()
-	random_rotation.x = 90
-	random_rotation.z = randi_range(0, 180)
 	timeout = false
 	timer.wait_time = randi_range(1, 4)
 	timer.start()
-	parent.can_damage_player = false
 	parent.nav.set_target_position(parent.global_position)
+	parent.anim_player.stop()
+	parent.anim_player.play("Death")
 	
 func exit() -> void:
 	super()
 	parent.rotation_degrees = Vector3.ZERO
+	parent.anim_player.stop()
+	parent.anim_player.play_backwards("Death")
 	
 func process_frame(_delta:float) -> ProjectileEnemyState:
 	if timeout:
 		return following_state
 	return null
 
-func process_physics(delta:float) -> ProjectileEnemyState:
-	parent.rotation_degrees = lerp(parent.rotation_degrees, random_rotation, 0.1)
-	
+func process_physics(delta:float) -> ProjectileEnemyState:	
 	if not parent.is_on_floor():
 		parent.velocity += parent.get_gravity() * delta
 	else:
