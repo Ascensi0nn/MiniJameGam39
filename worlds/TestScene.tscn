@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://blw4elx07yc8y"]
+
+[ext_resource type="PackedScene" uid="uid://cmvlaykdykwy7" path="res://entites/player/Player.tscn" id="1_bf0dm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cguwc"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_go42g"]
+albedo_color = Color(0.11988, 0.255621, 0.133048, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sreuk"]
+material = SubResource("StandardMaterial3D_go42g")
+size = Vector3(20, 1, 20)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mncer"]
+sky_top_color = Color(0.386294, 0.672874, 0.888834, 1)
+sky_horizon_color = Color(0.657362, 0.716741, 0.812594, 1)
+ground_bottom_color = Color(0.32033, 0.308051, 0.256849, 1)
+ground_horizon_color = Color(0.658824, 0.717647, 0.811765, 1)
+ground_curve = 0.196983
+sun_curve = 6.11788
+
+[sub_resource type="Sky" id="Sky_wicfy"]
+sky_material = SubResource("ProceduralSkyMaterial_mncer")
+
+[sub_resource type="Environment" id="Environment_mncer"]
+background_mode = 2
+sky = SubResource("Sky_wicfy")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+reflected_light_source = 2
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_cguwc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_sreuk")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_bf0dm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.91485, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.36771, 1.9464, 8.36337)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_mncer")

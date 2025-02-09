@@ -1,0 +1,361 @@
+[gd_scene load_steps=46 format=3 uid="uid://cmvlaykdykwy7"]
+
+[ext_resource type="Script" uid="uid://cae6g44xbirbd" path="res://entites/player/player.gd" id="1_pbn7k"]
+[ext_resource type="Script" uid="uid://d0sfm0yyxwr3v" path="res://entites/player/states/state_machine.gd" id="2_gqtyk"]
+[ext_resource type="Script" uid="uid://dkoxcoiuy63lr" path="res://entites/player/states/walking.gd" id="4_s32m8"]
+[ext_resource type="Script" uid="uid://rb21fr3ibhk" path="res://entites/player/states/jumping.gd" id="5_qjvlq"]
+[ext_resource type="Script" uid="uid://dmvm4pb2xqwxd" path="res://entites/player/states/falling.gd" id="6_afc1y"]
+[ext_resource type="Script" uid="uid://v2ox6bnpshov" path="res://entites/player/states/sprinting.gd" id="6_s32m8"]
+[ext_resource type="Script" uid="uid://bwk615hlarbio" path="res://entites/player/states/uppercutting.gd" id="7_qjvlq"]
+[ext_resource type="Script" uid="uid://bhhembbp1psc6" path="res://entites/player/punch.gd" id="8_afc1y"]
+[ext_resource type="Script" uid="uid://n76oq3dy8ls6" path="res://entites/player/states/dead.gd" id="8_ki8uu"]
+[ext_resource type="AudioStream" uid="uid://dbfcfi11g5g2y" path="res://sounds/uppercut/click2.mp3" id="9_7rm04"]
+[ext_resource type="Script" uid="uid://ciqp6n2tei8ve" path="res://entites/player/ground_pound.gd" id="9_b6ctk"]
+[ext_resource type="Script" uid="uid://bvsiswfbh6t8p" path="res://entites/player/screen_shake_pivot.gd" id="9_cccdf"]
+[ext_resource type="Script" uid="uid://c8gbk1uj5gb26" path="res://entites/player/health_bar.gd" id="10_hgriw"]
+[ext_resource type="Script" uid="uid://cygs78p5iwlhv" path="res://entites/player/knocked_out.gd" id="11_43lnm"]
+[ext_resource type="AudioStream" uid="uid://ca7psop4nsgfw" path="res://sounds/hurt/explosion.wav" id="11_d02n1"]
+[ext_resource type="AudioStream" uid="uid://b6jlkaf1vfsrw" path="res://sounds/attack/kick1.mp3" id="11_hh5dy"]
+[ext_resource type="AudioStream" uid="uid://cbph83sllwrbv" path="res://sounds/attack/kick2.mp3" id="12_1mesp"]
+[ext_resource type="AudioStream" uid="uid://kjargd0ldwtc" path="res://sounds/hurt/explosion3.wav" id="13_1k6dd"]
+[ext_resource type="AudioStream" uid="uid://cl0qt8a7fx5al" path="res://sounds/hurt/explosion4.wav" id="14_2b1ds"]
+[ext_resource type="AudioStream" uid="uid://k426cvgjvha8" path="res://sounds/hit_ground/explosion1.wav" id="15_iot4v"]
+[ext_resource type="AudioStream" uid="uid://cxb3vl6kelct1" path="res://sounds/hit_ground/explosion2.wav" id="16_43lnm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0rwas"]
+albedo_color = Color(0.645045, 0.489652, 0.279497, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xhfnw"]
+material = SubResource("StandardMaterial3D_0rwas")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kpjcp"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_d02n1"]
+playback_mode = 1
+random_pitch = 1.1
+streams_count = 1
+stream_0/stream = ExtResource("9_7rm04")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_diqxy"]
+playback_mode = 1
+streams_count = 3
+stream_0/stream = ExtResource("11_d02n1")
+stream_1/stream = ExtResource("13_1k6dd")
+stream_2/stream = ExtResource("14_2b1ds")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jjpnm"]
+playback_mode = 1
+streams_count = 3
+stream_0/stream = ExtResource("11_d02n1")
+stream_1/stream = ExtResource("13_1k6dd")
+stream_2/stream = ExtResource("14_2b1ds")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cccdf"]
+frequency = 0.125
+fractal_octaves = 10
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_b6ctk"]
+radius = 2.56
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_iot4v"]
+playback_mode = 1
+random_pitch = 1.1
+random_volume_offset_db = 0.5
+streams_count = 2
+stream_0/stream = ExtResource("11_hh5dy")
+stream_0/weight = 2.0
+stream_1/stream = ExtResource("12_1mesp")
+stream_1/weight = 2.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_b6ctk"]
+radius = 6.0
+
+[sub_resource type="Curve" id="Curve_b6ctk"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.734694, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_hgriw"]
+curve = SubResource("Curve_b6ctk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hgriw"]
+lifetime_randomness = 0.35
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_hgriw")
+hue_variation_min = -2.23517e-08
+hue_variation_max = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ki8uu"]
+albedo_color = Color(0.3328, 0.307324, 0.267017, 1)
+emission_enabled = true
+emission = Color(0.423877, 0.336515, 0.311733, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ki8uu"]
+material = SubResource("StandardMaterial3D_ki8uu")
+top_radius = 0.1
+bottom_radius = 0.0
+height = 1.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b6ctk"]
+lifetime_randomness = 0.35
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+spread = 90.0
+initial_velocity_min = 3.0
+initial_velocity_max = 7.0
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_hgriw")
+hue_variation_min = -2.23517e-08
+hue_variation_max = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b6ctk"]
+albedo_color = Color(0.117756, 0.105942, 0.0872407, 1)
+emission_enabled = true
+emission = Color(0.0941253, 0.0653566, 0.0571993, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cccdf"]
+material = SubResource("StandardMaterial3D_b6ctk")
+top_radius = 0.05
+bottom_radius = 0.0
+height = 0.5
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_n12ea"]
+playback_mode = 1
+random_pitch = 1.5
+random_volume_offset_db = 0.5
+streams_count = 2
+stream_0/stream = ExtResource("15_iot4v")
+stream_1/stream = ExtResource("16_43lnm")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ki8uu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cccdf"]
+bg_color = Color(0.866667, 0.0745098, 0.219608, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6dpk7"]
+bg_color = Color(0.111197, 0.111197, 0.111197, 1)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+shadow_color = Color(0, 0, 0, 0.27451)
+shadow_offset = Vector2(0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5384n"]
+bg_color = Color(0.912289, 0.912289, 0.912289, 1)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_1k6dd"]
+playback_mode = 1
+streams_count = 3
+stream_0/stream = ExtResource("11_d02n1")
+stream_1/stream = ExtResource("13_1k6dd")
+stream_2/stream = ExtResource("14_2b1ds")
+
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
+script = ExtResource("1_pbn7k")
+walk_spd = 10.0
+walk_acc = 10.0
+walk_dec = 10.0
+jump_spd = 6.0
+sprint_spd = 20.0
+sprint_acc = 5.0
+sprint_dec = 5.0
+uppercut_spd = 15.0
+camera_sens = 0.001
+
+[node name="Meshes" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Meshes"]
+mesh = SubResource("CapsuleMesh_xhfnw")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_kpjcp")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+script = ExtResource("2_gqtyk")
+starting_state = NodePath("Walking")
+
+[node name="Walking" type="Node" parent="StateMachine" node_paths=PackedStringArray("jumping_state", "falling_state", "sprinting_state", "uppercutting_state")]
+script = ExtResource("4_s32m8")
+jumping_state = NodePath("../Jumping")
+falling_state = NodePath("../Falling")
+sprinting_state = NodePath("../Sprinting")
+uppercutting_state = NodePath("../Uppercutting")
+
+[node name="Jumping" type="Node" parent="StateMachine" node_paths=PackedStringArray("walk_state", "sprinting_state", "falling_state", "uppercutting_state")]
+script = ExtResource("5_qjvlq")
+walk_state = NodePath("../Walking")
+sprinting_state = NodePath("../Sprinting")
+falling_state = NodePath("../Falling")
+uppercutting_state = NodePath("../Uppercutting")
+
+[node name="Falling" type="Node" parent="StateMachine" node_paths=PackedStringArray("walk_state", "sprinting_state", "uppercutting_state")]
+script = ExtResource("6_afc1y")
+walk_state = NodePath("../Walking")
+sprinting_state = NodePath("../Sprinting")
+uppercutting_state = NodePath("../Uppercutting")
+
+[node name="Sprinting" type="Node" parent="StateMachine" node_paths=PackedStringArray("walking_state", "jumping_state", "falling_state", "uppercutting_state")]
+script = ExtResource("6_s32m8")
+walking_state = NodePath("../Walking")
+jumping_state = NodePath("../Jumping")
+falling_state = NodePath("../Falling")
+uppercutting_state = NodePath("../Uppercutting")
+
+[node name="Uppercutting" type="Node" parent="StateMachine" node_paths=PackedStringArray("walk_state", "sprinting_state", "falling_state")]
+script = ExtResource("7_qjvlq")
+walk_state = NodePath("../Walking")
+sprinting_state = NodePath("../Sprinting")
+falling_state = NodePath("../Falling")
+
+[node name="UppercutSound" type="AudioStreamPlayer3D" parent="StateMachine/Uppercutting"]
+stream = SubResource("AudioStreamRandomizer_d02n1")
+
+[node name="Dead" type="Node" parent="StateMachine"]
+script = ExtResource("8_ki8uu")
+
+[node name="Label" type="Label" parent="StateMachine/Dead"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "CAUGHT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="StateMachine/Dead"]
+stream = SubResource("AudioStreamRandomizer_diqxy")
+
+[node name="Knocked Out" type="Node" parent="StateMachine" node_paths=PackedStringArray("dead_state")]
+script = ExtResource("11_43lnm")
+dead_state = NodePath("../Dead")
+
+[node name="KO Timer" type="Timer" parent="StateMachine/Knocked Out"]
+wait_time = 3.0
+one_shot = true
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="StateMachine/Knocked Out"]
+stream = SubResource("AudioStreamRandomizer_jjpnm")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.486958, -0.314984)
+
+[node name="ScreenShakePivot" type="Node3D" parent="CameraPivot"]
+unique_name_in_owner = true
+script = ExtResource("9_cccdf")
+noise = SubResource("FastNoiseLite_cccdf")
+
+[node name="PlayerCamera" type="Camera3D" parent="CameraPivot/ScreenShakePivot"]
+unique_name_in_owner = true
+
+[node name="PunchNode" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -1.12)
+script = ExtResource("8_afc1y")
+
+[node name="PunchArea" type="Area3D" parent="PunchNode"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PunchNode/PunchArea"]
+shape = SubResource("SphereShape3D_b6ctk")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="PunchNode"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.808988, -0.163091)
+stream = SubResource("AudioStreamRandomizer_iot4v")
+
+[node name="HitTimer" type="Timer" parent="PunchNode"]
+wait_time = 0.5
+
+[node name="GroundPoundNode" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+script = ExtResource("9_b6ctk")
+
+[node name="GPArea" type="Area3D" parent="GroundPoundNode"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GroundPoundNode/GPArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("CylinderShape3D_b6ctk")
+
+[node name="LightParticles" type="GPUParticles3D" parent="GroundPoundNode"]
+emitting = false
+amount = 18
+lifetime = 0.7
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_hgriw")
+draw_pass_1 = SubResource("CylinderMesh_ki8uu")
+
+[node name="DarkParticles" type="GPUParticles3D" parent="GroundPoundNode"]
+emitting = false
+amount = 18
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_b6ctk")
+draw_pass_1 = SubResource("CylinderMesh_cccdf")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="GroundPoundNode"]
+stream = SubResource("AudioStreamRandomizer_n12ea")
+
+[node name="Timer" type="Timer" parent="GroundPoundNode"]
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 1
+offset_left = 6.0
+offset_top = 8.0
+offset_right = 383.0
+offset_bottom = 35.0
+theme_override_styles/background = SubResource("StyleBoxEmpty_ki8uu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_cccdf")
+max_value = 3.0
+step = 1.0
+value = 3.0
+show_percentage = false
+script = ExtResource("10_hgriw")
+
+[node name="DamageBar" type="ProgressBar" parent="HealthBar"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_6dpk7")
+theme_override_styles/fill = SubResource("StyleBoxFlat_5384n")
+max_value = 3.0
+value = 3.0
+show_percentage = false
+
+[node name="Timer" type="Timer" parent="HealthBar"]
+wait_time = 0.5
+one_shot = true
+
+[node name="IFrames" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="UppercutCooldown" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="HurtAudio" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamRandomizer_1k6dd")
+
+[connection signal="hit_the_ground" from="StateMachine/Falling" to="GroundPoundNode" method="_on_falling_hit_the_ground"]
+[connection signal="timeout" from="StateMachine/Knocked Out/KO Timer" to="StateMachine/Knocked Out" method="_on_ko_timer_timeout"]
+[connection signal="timeout" from="PunchNode/HitTimer" to="PunchNode" method="_on_attack_cooldown_timeout"]
+[connection signal="timeout" from="HealthBar/Timer" to="HealthBar" method="_on_timer_timeout"]
+[connection signal="timeout" from="IFrames" to="." method="_on_i_frames_timeout"]
+[connection signal="timeout" from="UppercutCooldown" to="." method="_on_uppercut_cooldown_timeout"]

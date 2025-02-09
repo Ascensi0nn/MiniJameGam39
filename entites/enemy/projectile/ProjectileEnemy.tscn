@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=3 uid="uid://dklaewjp3gxh2"]
+
+[ext_resource type="Script" uid="uid://bvfcs0kv58e4q" path="res://entites/enemy/projectile/projectile_enemy.gd" id="1_xnj6w"]
+[ext_resource type="Script" uid="uid://bbwr3w51fl0qr" path="res://entites/enemy/projectile/state_machine_projectile_enemy.gd" id="3_awy43"]
+[ext_resource type="Script" uid="uid://2we7riog8ekx" path="res://entites/enemy/projectile/stunned.gd" id="4_k7e2o"]
+[ext_resource type="Script" uid="uid://0hieoytsa8ce" path="res://entites/enemy/projectile/following.gd" id="4_kuw2l"]
+[ext_resource type="Script" uid="uid://crt5dje0qqopp" path="res://entites/enemy/projectile/shooting.gd" id="5_k7e2o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l07pb"]
+albedo_color = Color(0.28862, 0.410574, 0.780374, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8aw5l"]
+material = SubResource("StandardMaterial3D_l07pb")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nmdcu"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_57da2"]
+radius = 0.656582
+
+[node name="ProjectileEnemy" type="CharacterBody3D"]
+script = ExtResource("1_xnj6w")
+
+[node name="Meshes" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Meshes"]
+mesh = SubResource("CapsuleMesh_8aw5l")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_nmdcu")
+
+[node name="ContactArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ContactArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.427393, 0)
+shape = SubResource("SphereShape3D_57da2")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+script = ExtResource("3_awy43")
+starting_state = NodePath("Following")
+
+[node name="Following" type="Node" parent="StateMachine" node_paths=PackedStringArray("shooting_state")]
+script = ExtResource("4_kuw2l")
+shooting_state = NodePath("../Shooting")
+
+[node name="Stunned" type="Node" parent="StateMachine" node_paths=PackedStringArray("following_state")]
+script = ExtResource("4_k7e2o")
+following_state = NodePath("../Following")
+
+[node name="Timer" type="Timer" parent="StateMachine/Stunned"]
+
+[node name="Shooting" type="Node" parent="StateMachine" node_paths=PackedStringArray("following_state")]
+script = ExtResource("5_k7e2o")
+following_state = NodePath("../Following")
+
+[node name="Timer" type="Timer" parent="StateMachine/Shooting"]
+wait_time = 0.7
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+target_desired_distance = 10.0
+
+[connection signal="body_entered" from="ContactArea" to="ContactArea" method="_on_body_entered"]
+[connection signal="body_exited" from="ContactArea" to="ContactArea" method="_on_body_exited"]
+[connection signal="timeout" from="StateMachine/Stunned/Timer" to="StateMachine/Stunned" method="_on_timer_timeout"]
+[connection signal="timeout" from="StateMachine/Shooting/Timer" to="StateMachine/Shooting" method="_on_timer_timeout"]
+[connection signal="target_reached" from="NavigationAgent3D" to="StateMachine/Following" method="_on_navigation_agent_3d_target_reached"]

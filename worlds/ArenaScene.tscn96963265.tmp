@@ -1,0 +1,104 @@
+[gd_scene load_steps=13 format=3 uid="uid://ewdkojhc438b"]
+
+[ext_resource type="PackedScene" uid="uid://cmvlaykdykwy7" path="res://entites/player/Player.tscn" id="1_o08eu"]
+[ext_resource type="Texture2D" uid="uid://78rlf45x8knc" path="res://textures/sky/sky_texture.exr" id="3_scak1"]
+[ext_resource type="PackedScene" uid="uid://ek2pjs0fwiy5" path="res://world_objects/MoveableBox.tscn" id="4_o08eu"]
+[ext_resource type="PackedScene" uid="uid://bhq4svjfk37lc" path="res://worlds/ArenaStatic.tscn" id="4_scmvn"]
+[ext_resource type="PackedScene" uid="uid://1ki2eyk1iybx" path="res://entites/enemy/Enemy.tscn" id="5_scmvn"]
+[ext_resource type="Shader" uid="uid://uebr5rlcilxo" path="res://worlds/ArenaScene.gdshader" id="6_s75ll"]
+[ext_resource type="Script" uid="uid://dptwabjae6lic" path="res://entites/player/shader_pixelation.gd" id="7_wdydg"]
+
+[sub_resource type="Shader" id="Shader_o08eu"]
+code = "
+// NOTE: Shader automatically converted from Godot Engine 4.4.beta1's PanoramaSkyMaterial.
+
+shader_type sky;
+
+uniform sampler2D source_panorama : filter_linear, source_color, hint_default_black;
+uniform float exposure : hint_range(0, 128) = 1.0;
+
+void sky() {
+	COLOR = texture(source_panorama, SKY_COORDS).rgb;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_scmvn"]
+shader = SubResource("Shader_o08eu")
+shader_parameter/source_panorama = ExtResource("3_scak1")
+shader_parameter/exposure = 1.0
+
+[sub_resource type="Sky" id="Sky_s75ll"]
+sky_material = SubResource("ShaderMaterial_scmvn")
+
+[sub_resource type="Environment" id="Environment_wdydg"]
+background_mode = 2
+sky = SubResource("Sky_s75ll")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wdydg"]
+shader = ExtResource("6_s75ll")
+shader_parameter/pixel_size = 1
+shader_parameter/screen_size = Vector2(1920, 1080)
+
+[node name="ArenaScene" type="Node3D"]
+
+[node name="Player" parent="." instance=ExtResource("1_o08eu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.13089, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.431015, 0.902345, 0, -0.902345, -0.431015, 0, 25.6461, -27.5614)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wdydg")
+
+[node name="Box" parent="." instance=ExtResource("4_o08eu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.21214, 11.3769, -6.97439)
+
+[node name="Box2" parent="." instance=ExtResource("4_o08eu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9933, 11.3769, -8.29716)
+
+[node name="Box3" parent="." instance=ExtResource("4_o08eu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06795, 12.9946, -6.30892)
+
+[node name="Box4" parent="." instance=ExtResource("4_o08eu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.20639, 11.3769, -5.73514)
+
+[node name="Box5" parent="." instance=ExtResource("4_o08eu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.09152, 11.3769, -3.80543)
+
+[node name="Box6" parent="." instance=ExtResource("4_o08eu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.44045, 11.3769, -7.89228)
+
+[node name="Box7" parent="." instance=ExtResource("4_o08eu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.24615, 11.3769, -7.15525)
+
+[node name="Box8" parent="." instance=ExtResource("4_o08eu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.724227, 11.3769, -5.63391)
+
+[node name="ArenaStatic" parent="." instance=ExtResource("4_scmvn")]
+
+[node name="EnemyBody" parent="." instance=ExtResource("5_scmvn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.5902, 1.5, -9.55835)
+
+[node name="Shader" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="ColorRect" type="ColorRect" parent="Shader"]
+unique_name_in_owner = true
+z_index = -2
+material = SubResource("ShaderMaterial_wdydg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("7_wdydg")

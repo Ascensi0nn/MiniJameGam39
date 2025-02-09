@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://co0fmp605j86p"]
+
+[ext_resource type="Texture2D" uid="uid://bnkjddkjjid5k" path="res://textures/tile1/Tiles002_1K-JPG_Color.jpg" id="1_pqwkd"]
+[ext_resource type="Texture2D" uid="uid://ds41dj75t3skl" path="res://textures/tile1/Tiles002_1K-JPG_NormalGL.jpg" id="2_iwcg3"]
+[ext_resource type="Texture2D" uid="uid://dqimafs4t4d8" path="res://textures/tile1/Tiles002_1K-JPG_Roughness.jpg" id="3_3h323"]
+
+[resource]
+albedo_texture = ExtResource("1_pqwkd")
+roughness_texture = ExtResource("3_3h323")
+normal_enabled = true
+normal_texture = ExtResource("2_iwcg3")
+uv1_scale = Vector3(30, 30, 30)

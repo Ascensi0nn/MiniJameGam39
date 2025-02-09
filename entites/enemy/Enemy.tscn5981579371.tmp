@@ -1,0 +1,87 @@
+[gd_scene load_steps=12 format=3 uid="uid://1ki2eyk1iybx"]
+
+[ext_resource type="Script" uid="uid://bkud1y78a8iy" path="res://entites/enemy/enemy.gd" id="1_3lyau"]
+[ext_resource type="Shader" uid="uid://uebr5rlcilxo" path="res://worlds/ArenaScene.gdshader" id="2_2reol"]
+[ext_resource type="Script" uid="uid://cj52cb6rvwy6b" path="res://entites/enemy/contact_area.gd" id="2_wi116"]
+[ext_resource type="Script" uid="uid://bw02fjqgbohrr" path="res://entites/enemy/states/state_machine_enemy.gd" id="3_kkayb"]
+[ext_resource type="Script" uid="uid://ct1wtaj1rgofi" path="res://entites/enemy/states/aggro.gd" id="4_gfeae"]
+[ext_resource type="Script" uid="uid://b82m2cecfm38p" path="res://entites/enemy/states/stunned.gd" id="5_gfeae"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wi116"]
+radius = 0.656582
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1mng2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_we4ae"]
+albedo_color = Color(0.861329, 0.250495, 0.235592, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_h4m8c"]
+material = SubResource("StandardMaterial3D_we4ae")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5s0lt"]
+shader = ExtResource("2_2reol")
+shader_parameter/pixel_size = 16
+shader_parameter/screen_size = Vector2(1920, 1080)
+
+[node name="EnemyBody" type="CharacterBody3D"]
+script = ExtResource("1_3lyau")
+damage = 35.0
+
+[node name="ContactArea" type="Area3D" parent="."]
+script = ExtResource("2_wi116")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ContactArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.427393, 0)
+shape = SubResource("SphereShape3D_wi116")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_1mng2")
+
+[node name="Meshes" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Meshes"]
+mesh = SubResource("CapsuleMesh_h4m8c")
+skeleton = NodePath("../..")
+
+[node name="Shader" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="ColorRect" type="ColorRect" parent="Shader"]
+z_index = -2
+material = SubResource("ShaderMaterial_5s0lt")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 774.0
+offset_bottom = 440.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+script = ExtResource("3_kkayb")
+starting_state = NodePath("Aggro")
+
+[node name="Aggro" type="Node" parent="StateMachine"]
+script = ExtResource("4_gfeae")
+
+[node name="Stunned" type="Node" parent="StateMachine" node_paths=PackedStringArray("aggro_state")]
+script = ExtResource("5_gfeae")
+aggro_state = NodePath("../Aggro")
+
+[node name="Timer" type="Timer" parent="StateMachine/Stunned"]
+
+[connection signal="body_entered" from="ContactArea" to="ContactArea" method="_on_body_entered"]
+[connection signal="body_exited" from="ContactArea" to="ContactArea" method="_on_body_exited"]
+[connection signal="timeout" from="StateMachine/Stunned/Timer" to="StateMachine/Stunned" method="_on_timer_timeout"]

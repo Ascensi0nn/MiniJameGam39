@@ -1,0 +1,183 @@
+[gd_scene load_steps=23 format=3 uid="uid://cmvlaykdykwy7"]
+
+[ext_resource type="Script" uid="uid://cae6g44xbirbd" path="res://entites/player/player.gd" id="1_pbn7k"]
+[ext_resource type="Script" uid="uid://d0sfm0yyxwr3v" path="res://entites/player/state_machine.gd" id="2_gqtyk"]
+[ext_resource type="Script" uid="uid://dkoxcoiuy63lr" path="res://entites/player/walking.gd" id="4_s32m8"]
+[ext_resource type="Script" uid="uid://rb21fr3ibhk" path="res://entites/player/jumping.gd" id="5_qjvlq"]
+[ext_resource type="Script" uid="uid://dmvm4pb2xqwxd" path="res://entites/player/falling.gd" id="6_afc1y"]
+[ext_resource type="Script" uid="uid://v2ox6bnpshov" path="res://entites/player/sprinting.gd" id="6_s32m8"]
+[ext_resource type="Script" uid="uid://bwk615hlarbio" path="res://entites/player/uppercutting.gd" id="7_qjvlq"]
+[ext_resource type="Script" uid="uid://bhhembbp1psc6" path="res://entites/player/punch.gd" id="8_afc1y"]
+[ext_resource type="Script" uid="uid://ciqp6n2tei8ve" path="res://entites/player/ground_pound.gd" id="9_b6ctk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0rwas"]
+albedo_color = Color(0.645045, 0.489652, 0.279497, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xhfnw"]
+material = SubResource("StandardMaterial3D_0rwas")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kpjcp"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_b6ctk"]
+radius = 2.56
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_b6ctk"]
+height = 1.0
+radius = 3.0
+
+[sub_resource type="Curve" id="Curve_b6ctk"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.734694, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_hgriw"]
+curve = SubResource("Curve_b6ctk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hgriw"]
+lifetime_randomness = 0.35
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_hgriw")
+hue_variation_min = -2.23517e-08
+hue_variation_max = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ki8uu"]
+albedo_color = Color(0.3328, 0.307324, 0.267017, 1)
+emission_enabled = true
+emission = Color(0.423877, 0.336515, 0.311733, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ki8uu"]
+material = SubResource("StandardMaterial3D_ki8uu")
+top_radius = 0.1
+bottom_radius = 0.0
+height = 1.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b6ctk"]
+lifetime_randomness = 0.35
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+spread = 90.0
+initial_velocity_min = 3.0
+initial_velocity_max = 7.0
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_hgriw")
+hue_variation_min = -2.23517e-08
+hue_variation_max = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b6ctk"]
+albedo_color = Color(0.117756, 0.105942, 0.0872407, 1)
+emission_enabled = true
+emission = Color(0.0941253, 0.0653566, 0.0571993, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cccdf"]
+material = SubResource("StandardMaterial3D_b6ctk")
+top_radius = 0.05
+bottom_radius = 0.0
+height = 0.5
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_pbn7k")
+walk_spd = 10.0
+walk_acc = 10.0
+walk_dec = 10.0
+jump_spd = 6.0
+sprint_spd = 20.0
+sprint_acc = 5.0
+sprint_dec = 5.0
+uppercut_spd = 15.0
+camera_sens = 0.001
+
+[node name="Meshes" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Meshes"]
+mesh = SubResource("CapsuleMesh_xhfnw")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_kpjcp")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+script = ExtResource("2_gqtyk")
+starting_state = NodePath("Walking")
+
+[node name="Walking" type="Node" parent="StateMachine" node_paths=PackedStringArray("jumping_state", "falling_state", "sprinting_state", "uppercutting_state")]
+script = ExtResource("4_s32m8")
+jumping_state = NodePath("../Jumping")
+falling_state = NodePath("../Falling")
+sprinting_state = NodePath("../Sprinting")
+uppercutting_state = NodePath("../Uppercutting")
+
+[node name="Jumping" type="Node" parent="StateMachine" node_paths=PackedStringArray("walk_state", "sprinting_state", "falling_state")]
+script = ExtResource("5_qjvlq")
+walk_state = NodePath("../Walking")
+sprinting_state = NodePath("../Sprinting")
+falling_state = NodePath("../Falling")
+
+[node name="Falling" type="Node" parent="StateMachine" node_paths=PackedStringArray("walk_state", "sprinting_state")]
+script = ExtResource("6_afc1y")
+walk_state = NodePath("../Walking")
+sprinting_state = NodePath("../Sprinting")
+
+[node name="Sprinting" type="Node" parent="StateMachine" node_paths=PackedStringArray("walking_state", "jumping_state", "falling_state")]
+script = ExtResource("6_s32m8")
+walking_state = NodePath("../Walking")
+jumping_state = NodePath("../Jumping")
+falling_state = NodePath("../Falling")
+
+[node name="Uppercutting" type="Node" parent="StateMachine" node_paths=PackedStringArray("walk_state", "sprinting_state", "falling_state")]
+script = ExtResource("7_qjvlq")
+walk_state = NodePath("../Walking")
+sprinting_state = NodePath("../Sprinting")
+falling_state = NodePath("../Falling")
+
+[node name="CameraController" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.486958, -0.314984)
+
+[node name="Camera3D" type="Camera3D" parent="CameraController"]
+
+[node name="PunchNode" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -1.12)
+script = ExtResource("8_afc1y")
+
+[node name="PunchArea" type="Area3D" parent="PunchNode"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PunchNode/PunchArea"]
+shape = SubResource("SphereShape3D_b6ctk")
+
+[node name="GroundPoundNode" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+script = ExtResource("9_b6ctk")
+
+[node name="GPArea" type="Area3D" parent="GroundPoundNode"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GroundPoundNode/GPArea"]
+shape = SubResource("CylinderShape3D_b6ctk")
+
+[node name="LightParticles" type="GPUParticles3D" parent="GroundPoundNode"]
+emitting = false
+amount = 18
+lifetime = 0.7
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_hgriw")
+draw_pass_1 = SubResource("CylinderMesh_ki8uu")
+
+[node name="DarkParticles" type="GPUParticles3D" parent="GroundPoundNode"]
+emitting = false
+amount = 18
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_b6ctk")
+draw_pass_1 = SubResource("CylinderMesh_cccdf")
+
+[connection signal="hit_the_ground" from="StateMachine/Falling" to="GroundPoundNode" method="_on_falling_hit_the_ground"]

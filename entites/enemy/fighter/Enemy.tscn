@@ -1,0 +1,65 @@
+[gd_scene load_steps=11 format=3 uid="uid://1ki2eyk1iybx"]
+
+[ext_resource type="Script" uid="uid://bkud1y78a8iy" path="res://entites/enemy/fighter/enemy.gd" id="1_8rssu"]
+[ext_resource type="Script" uid="uid://cj52cb6rvwy6b" path="res://entites/enemy/fighter/contact_area.gd" id="2_vrfwx"]
+[ext_resource type="Script" uid="uid://bw02fjqgbohrr" path="res://entites/enemy/fighter/state_machine_enemy.gd" id="3_c1ux2"]
+[ext_resource type="PackedScene" uid="uid://bfb353lm7qyov" path="res://entites/enemy/fighter/Skeleton.glb" id="3_vrfwx"]
+[ext_resource type="Script" uid="uid://ct1wtaj1rgofi" path="res://entites/enemy/fighter/aggro.gd" id="4_8v508"]
+[ext_resource type="Script" uid="uid://b82m2cecfm38p" path="res://entites/enemy/fighter/stunned.gd" id="5_7t23n"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wi116"]
+radius = 0.328876
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1mng2"]
+radius = 0.283653
+height = 1.33365
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_we4ae"]
+albedo_color = Color(0.861329, 0.250495, 0.235592, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_h4m8c"]
+material = SubResource("StandardMaterial3D_we4ae")
+
+[node name="EnemyBody" type="CharacterBody3D"]
+script = ExtResource("1_8rssu")
+damage = 100.0
+
+[node name="ContactArea" type="Area3D" parent="."]
+script = ExtResource("2_vrfwx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ContactArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.83584, 0)
+shape = SubResource("SphereShape3D_wi116")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.424122, 0)
+shape = SubResource("CapsuleShape3D_1mng2")
+
+[node name="Meshes" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Meshes"]
+visible = false
+mesh = SubResource("CapsuleMesh_h4m8c")
+skeleton = NodePath("../..")
+
+[node name="Root Scene" parent="Meshes" instance=ExtResource("3_vrfwx")]
+transform = Transform3D(1.75, 0, 0, 0, 1.75, 0, 0, 0, 1.75, 0, -1.05922, 0)
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+script = ExtResource("3_c1ux2")
+starting_state = NodePath("Aggro")
+
+[node name="Aggro" type="Node" parent="StateMachine"]
+script = ExtResource("4_8v508")
+
+[node name="Stunned" type="Node" parent="StateMachine" node_paths=PackedStringArray("aggro_state")]
+script = ExtResource("5_7t23n")
+aggro_state = NodePath("../Aggro")
+
+[node name="Timer" type="Timer" parent="StateMachine/Stunned"]
+
+[connection signal="body_entered" from="ContactArea" to="ContactArea" method="_on_body_entered"]
+[connection signal="body_exited" from="ContactArea" to="ContactArea" method="_on_body_exited"]
+[connection signal="timeout" from="StateMachine/Stunned/Timer" to="StateMachine/Stunned" method="_on_timer_timeout"]
