@@ -12,7 +12,8 @@ var can_damage_player:bool = true
 var gem1:PackedScene = preload("res://world_objects/other/GemBlue.tscn")
 var gem2:PackedScene = preload("res://world_objects/other/GemGreen.tscn")
 var gem3:PackedScene = preload("res://world_objects/other/GemPink.tscn")
-var pickup_arr = [gem1, gem2, gem3]
+var health:PackedScene = preload("res://world_objects/other/Health.tscn")
+var pickup_arr = [gem1, gem2, gem3, health]
 
 @export var walk_spd = 5
 @export var walk_acc = 10

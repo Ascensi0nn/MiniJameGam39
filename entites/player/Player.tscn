@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://cmvlaykdykwy7"]
+[gd_scene load_steps=45 format=3 uid="uid://cmvlaykdykwy7"]
 
 [ext_resource type="Script" uid="uid://cae6g44xbirbd" path="res://entites/player/player.gd" id="1_pbn7k"]
 [ext_resource type="Script" uid="uid://d0sfm0yyxwr3v" path="res://entites/player/states/state_machine.gd" id="2_gqtyk"]
@@ -12,12 +12,12 @@
 [ext_resource type="AudioStream" uid="uid://dbfcfi11g5g2y" path="res://sounds/uppercut/click2.mp3" id="9_7rm04"]
 [ext_resource type="Script" uid="uid://ciqp6n2tei8ve" path="res://entites/player/ground_pound.gd" id="9_b6ctk"]
 [ext_resource type="Script" uid="uid://bvsiswfbh6t8p" path="res://entites/player/screen_shake_pivot.gd" id="9_cccdf"]
-[ext_resource type="Script" uid="uid://c8gbk1uj5gb26" path="res://entites/player/health_bar.gd" id="10_hgriw"]
 [ext_resource type="Script" uid="uid://cygs78p5iwlhv" path="res://entites/player/knocked_out.gd" id="11_43lnm"]
 [ext_resource type="AudioStream" uid="uid://ca7psop4nsgfw" path="res://sounds/hurt/explosion.wav" id="11_d02n1"]
 [ext_resource type="AudioStream" uid="uid://b6jlkaf1vfsrw" path="res://sounds/attack/kick1.mp3" id="11_hh5dy"]
 [ext_resource type="AudioStream" uid="uid://cbph83sllwrbv" path="res://sounds/attack/kick2.mp3" id="12_1mesp"]
 [ext_resource type="AudioStream" uid="uid://kjargd0ldwtc" path="res://sounds/hurt/explosion3.wav" id="13_1k6dd"]
+[ext_resource type="Script" uid="uid://c8tp8g2sgxq6e" path="res://entites/player/control.gd" id="13_d02n1"]
 [ext_resource type="AudioStream" uid="uid://cl0qt8a7fx5al" path="res://sounds/hurt/explosion4.wav" id="14_2b1ds"]
 [ext_resource type="AudioStream" uid="uid://k426cvgjvha8" path="res://sounds/hit_ground/explosion1.wav" id="15_iot4v"]
 [ext_resource type="AudioStream" uid="uid://cxb3vl6kelct1" path="res://sounds/hit_ground/explosion2.wav" id="16_43lnm"]
@@ -43,6 +43,10 @@ streams_count = 3
 stream_0/stream = ExtResource("11_d02n1")
 stream_1/stream = ExtResource("13_1k6dd")
 stream_2/stream = ExtResource("14_2b1ds")
+
+[sub_resource type="LabelSettings" id="LabelSettings_d02n1"]
+font_size = 150
+font_color = Color(0.89059, 0.89059, 0.89059, 1)
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jjpnm"]
 playback_mode = 1
@@ -138,23 +142,6 @@ stream_1/stream = ExtResource("16_43lnm")
 font_size = 50
 font_color = Color(0.796243, 0.796243, 0.796243, 1)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ki8uu"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cccdf"]
-bg_color = Color(0.866667, 0.0745098, 0.219608, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6dpk7"]
-bg_color = Color(0.111197, 0.111197, 0.111197, 1)
-expand_margin_left = 1.0
-expand_margin_top = 1.0
-expand_margin_right = 1.0
-expand_margin_bottom = 1.0
-shadow_color = Color(0, 0, 0, 0.27451)
-shadow_offset = Vector2(0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5384n"]
-bg_color = Color(0.912289, 0.912289, 0.912289, 1)
-
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_1k6dd"]
 playback_mode = 1
 streams_count = 3
@@ -226,19 +213,61 @@ stream = SubResource("AudioStreamRandomizer_d02n1")
 [node name="Dead" type="Node" parent="StateMachine"]
 script = ExtResource("8_ki8uu")
 
-[node name="Label" type="Label" parent="StateMachine/Dead"]
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="StateMachine/Dead"]
+stream = SubResource("AudioStreamRandomizer_diqxy")
+
+[node name="Control" type="Control" parent="StateMachine/Dead"]
 visible = false
+z_index = 5
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "CAUGHT"
+script = ExtResource("13_d02n1")
+
+[node name="Label" type="Label" parent="StateMachine/Dead/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -518.0
+offset_top = -102.5
+offset_right = 518.0
+offset_bottom = 102.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "SURROUNDED"
+label_settings = SubResource("LabelSettings_d02n1")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="StateMachine/Dead"]
-stream = SubResource("AudioStreamRandomizer_diqxy")
+[node name="HBoxContainer" type="HBoxContainer" parent="StateMachine/Dead/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -27.0
+offset_top = -40.0
+offset_right = 121.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 0
+
+[node name="Retry" type="Button" parent="StateMachine/Dead/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Retry"
+
+[node name="Menu" type="Button" parent="StateMachine/Dead/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Menu"
 
 [node name="Knocked Out" type="Node" parent="StateMachine" node_paths=PackedStringArray("dead_state")]
 script = ExtResource("11_43lnm")
@@ -329,38 +358,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("21_d02n1")
 
-[node name="HealthBar" type="ProgressBar" parent="."]
-z_index = 1
-offset_left = 6.0
-offset_top = 8.0
-offset_right = 383.0
-offset_bottom = 35.0
-theme_override_styles/background = SubResource("StyleBoxEmpty_ki8uu")
-theme_override_styles/fill = SubResource("StyleBoxFlat_cccdf")
-max_value = 3.0
-step = 1.0
-value = 3.0
-show_percentage = false
-script = ExtResource("10_hgriw")
-
-[node name="DamageBar" type="ProgressBar" parent="HealthBar"]
-z_index = -1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_6dpk7")
-theme_override_styles/fill = SubResource("StyleBoxFlat_5384n")
-max_value = 3.0
-value = 3.0
-show_percentage = false
-
-[node name="Timer" type="Timer" parent="HealthBar"]
-wait_time = 0.5
-one_shot = true
-
 [node name="IFrames" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
@@ -373,8 +370,9 @@ one_shot = true
 stream = SubResource("AudioStreamRandomizer_1k6dd")
 
 [connection signal="hit_the_ground" from="StateMachine/Falling" to="GroundPoundNode" method="_on_falling_hit_the_ground"]
+[connection signal="pressed" from="StateMachine/Dead/Control/HBoxContainer/Retry" to="StateMachine/Dead/Control" method="_on_retry_pressed"]
+[connection signal="pressed" from="StateMachine/Dead/Control/HBoxContainer/Menu" to="StateMachine/Dead/Control" method="_on_menu_pressed"]
 [connection signal="timeout" from="StateMachine/Knocked Out/KO Timer" to="StateMachine/Knocked Out" method="_on_ko_timer_timeout"]
 [connection signal="timeout" from="PunchNode/HitTimer" to="PunchNode" method="_on_attack_cooldown_timeout"]
-[connection signal="timeout" from="HealthBar/Timer" to="HealthBar" method="_on_timer_timeout"]
 [connection signal="timeout" from="IFrames" to="." method="_on_i_frames_timeout"]
 [connection signal="timeout" from="UppercutCooldown" to="." method="_on_uppercut_cooldown_timeout"]

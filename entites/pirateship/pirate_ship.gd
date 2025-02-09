@@ -9,7 +9,7 @@ var cannon_ball:PackedScene = preload("res://entites/pirateship/CannonBall.tscn"
 var fighter_enemy:PackedScene = preload("res://entites/enemy/fighter/Enemy.tscn")
 var projectile_enemy:PackedScene = preload("res://entites/enemy/projectile/ProjectileEnemy.tscn")
 var barrel:PackedScene = preload("res://world_objects/BreakableBarrel.tscn")
-var arr = [fighter_enemy, projectile_enemy, barrel]
+var arr = [fighter_enemy, projectile_enemy, barrel, cannon_ball]
 
 func _ready():
 	shot_timer.start()

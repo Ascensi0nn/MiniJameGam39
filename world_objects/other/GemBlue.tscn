@@ -21,7 +21,7 @@ stream_1/stream = ExtResource("4_svu8u")
 stream_2/stream = ExtResource("5_tlwaa")
 stream_3/stream = ExtResource("6_2tkhe")
 
-[node name="GemBlue" type="RigidBody3D"]
+[node name="GemBlue" type="RigidBody3D" groups=["Pickup"]]
 script = ExtResource("1_f0hx5")
 type = "GEM"
 

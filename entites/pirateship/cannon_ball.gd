@@ -32,11 +32,18 @@ func explode() -> void:
 			body.apply_impulse(direction * speed)
 			
 		if collider.has_method("on_hit"):
-			var body = collider as CharacterBody3D
-			collider.on_hit()
-			var direction:Vector3 = body.global_position - explosion_area.global_position
-			var distance = body.global_position.distance_to(explosion_area.global_position)
-			body.velocity = direction * speed / distance
+			if collider is CharacterBody3D:
+				var body = collider as CharacterBody3D
+				collider.on_hit()
+				var direction:Vector3 = body.global_position - explosion_area.global_position
+				var distance = body.global_position.distance_to(explosion_area.global_position)
+				body.velocity = direction * speed / distance
+			elif collider is RigidBody3D:
+				var body = collider as RigidBody3D
+				body.on_hit()
+				var direction:Vector3 = body.global_position - explosion_area.global_position
+				var distance = body.global_position.distance_to(explosion_area.global_position)
+				body.apply_impulse(direction * 15 / distance)
 		
 		if collider.has_method("take_damage"):
 			collider.take_damage()

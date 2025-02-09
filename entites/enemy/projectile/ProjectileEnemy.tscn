@@ -4366,7 +4366,7 @@ _data = {
 &"Walk": SubResource("Animation_s4udq")
 }
 
-[node name="ProjectileEnemy" type="CharacterBody3D"]
+[node name="ProjectileEnemy" type="CharacterBody3D" groups=["Enemy"]]
 script = ExtResource("1_xnj6w")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -4812,7 +4812,7 @@ bones/57/rotation = Quaternion(6.01853e-36, 0, -5.02604e-30, 1)
 bones/57/scale = Vector3(1, 1, 1)
 
 [node name="Weapon_Cutlass" type="BoneAttachment3D" parent="RootNode/CharacterArmature/Skeleton3D"]
-transform = Transform3D(0.247512, -0.433309, 0.866591, 0.779941, -0.441544, -0.443542, 0.574829, 0.785673, 0.228668, -0.00521653, -0.0013041, 0.00453276)
+transform = Transform3D(0.247512, -0.43331, 0.866591, 0.779941, -0.441543, -0.443543, 0.574828, 0.785673, 0.22867, -0.00521652, -0.00130409, 0.00453276)
 visible = false
 bone_name = "Weapon_Cutlass"
 bone_idx = 27

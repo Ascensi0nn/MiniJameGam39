@@ -37,7 +37,7 @@ height = 1.5
 radial_segments = 8
 rings = 2
 
-[node name="BreakableBarrel" type="RigidBody3D"]
+[node name="BreakableBarrel" type="RigidBody3D" groups=["Pickup"]]
 script = ExtResource("1_wp2ry")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

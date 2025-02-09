@@ -12,7 +12,7 @@ radius = 0.655
 [sub_resource type="SphereShape3D" id="SphereShape3D_4lmbr"]
 radius = 3.195
 
-[node name="Bomb" type="RigidBody3D"]
+[node name="Bomb" type="RigidBody3D" groups=["Projectile"]]
 script = ExtResource("1_uotq2")
 
 [node name="Mesh" parent="." instance=ExtResource("3_lx6mq")]

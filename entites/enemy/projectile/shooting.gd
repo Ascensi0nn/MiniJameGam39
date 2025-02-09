@@ -25,6 +25,9 @@ func process_frame(_delta:float) -> ProjectileEnemyState:
 	return null
 
 func process_physics(delta:float) -> ProjectileEnemyState:
+	if not is_instance_valid(parent) or not is_instance_valid(parent.player):
+		return null
+	
 	parent.rotate_enemy_towards_player()
 	
 	if can_shoot:

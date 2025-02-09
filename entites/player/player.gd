@@ -4,7 +4,6 @@ extends CharacterBody3D
 @onready var state_machine = $StateMachine
 @onready var camera_pivot = $CameraPivot
 @onready var player_camera = %PlayerCamera
-@onready var healthbar = $HealthBar
 @onready var iframes_timer = $IFrames
 @onready var uppercut_timer = $UppercutCooldown
 @onready var hurt_audio = $HurtAudio
@@ -27,7 +26,6 @@ var can_attack:bool = true
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	healthbar.init_health(GameManager.get_health())
 	state_machine.init(self)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -73,7 +71,6 @@ func take_damage():
 	iframes_timer.start()
 	
 	GameManager.reduce_health()
-	healthbar.health = GameManager.get_health()
 	
 	Trauma.on_player_damaged()
 	hurt_audio.play()

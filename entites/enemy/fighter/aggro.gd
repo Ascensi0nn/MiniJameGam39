@@ -10,6 +10,8 @@ func exit() -> void:
 	parent.nav.set_target_position(parent.global_position)
 
 func process_physics(delta:float) -> EnemyState:
+	if not is_instance_valid(parent) or not is_instance_valid(parent.player):
+		return null
 	parent.nav.target_position = parent.player.global_position
 	parent.rotate_enemy_towards_velocity()
 	

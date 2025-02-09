@@ -1,0 +1,112 @@
+[gd_scene load_steps=12 format=3 uid="uid://djuljo2t5fmxk"]
+
+[ext_resource type="Script" uid="uid://ksb128ab3utx" path="res://worlds/menu.gd" id="1_0p8e8"]
+[ext_resource type="PackedScene" uid="uid://db0hscg52uxbs" path="res://world_objects/ocean/Water.tscn" id="1_lp6lc"]
+[ext_resource type="PackedScene" uid="uid://b3yqo5k8l04c7" path="res://worlds/Island/Small Ship.glb" id="2_0p8e8"]
+[ext_resource type="Texture2D" uid="uid://78rlf45x8knc" path="res://textures/sky/sky_texture.exr" id="4_xu3eq"]
+
+[sub_resource type="Animation" id="Animation_65pt7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Boat:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xu3eq"]
+resource_name = "rock"
+length = 1.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Boat:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, -0.0872665), Vector3(0, 0, 0.0872665)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xmgl5"]
+_data = {
+&"RESET": SubResource("Animation_65pt7"),
+&"rock": SubResource("Animation_xu3eq")
+}
+
+[sub_resource type="Shader" id="Shader_o08eu"]
+code = "
+// NOTE: Shader automatically converted from Godot Engine 4.4.beta1's PanoramaSkyMaterial.
+
+shader_type sky;
+
+uniform sampler2D source_panorama : filter_linear, source_color, hint_default_black;
+uniform float exposure : hint_range(0, 128) = 1.0;
+
+void sky() {
+	COLOR = texture(source_panorama, SKY_COORDS).rgb;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_65pt7"]
+shader = SubResource("Shader_o08eu")
+shader_parameter/source_panorama = ExtResource("4_xu3eq")
+shader_parameter/exposure = 1.0
+
+[sub_resource type="Sky" id="Sky_s75ll"]
+sky_material = SubResource("ShaderMaterial_65pt7")
+
+[sub_resource type="Environment" id="Environment_xmgl5"]
+background_mode = 2
+sky = SubResource("Sky_s75ll")
+
+[node name="Menu" type="Node3D"]
+script = ExtResource("1_0p8e8")
+
+[node name="Water" parent="." instance=ExtResource("1_lp6lc")]
+
+[node name="Boat" parent="." instance=ExtResource("2_0p8e8")]
+transform = Transform3D(7.535, 0, 0, 0, 7.535, 0, 0, 0, 7.535, 0, -2.3811, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_xmgl5")
+}
+autoplay = "rock"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.805091, 0.406516, -0.431942, 0, 0.728216, 0.685348, 0.593152, -0.551767, 0.586279, -33.3476, 33.0396, 16.4068)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -33.0
+offset_right = 41.0
+offset_bottom = 33.0
+grow_vertical = 2
+
+[node name="Play" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Play"
+
+[node name="Exit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Exit"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_xmgl5")
+
+[connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]

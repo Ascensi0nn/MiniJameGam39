@@ -1,15 +1,15 @@
 extends State
 
-@onready var label = $Label
+@onready var ui = $Control
 
 func enter() -> void:
 	super()
-	label.visible = true
-	print('dead')
+	ui.visible = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 	
 func exit() -> void:
 	super()
-	label.visible = false
+	ui.visible = false
 	Engine.time_scale = 1
 
 func process_input(_event: InputEvent) -> State:

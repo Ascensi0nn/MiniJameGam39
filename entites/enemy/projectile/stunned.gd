@@ -9,7 +9,7 @@ var random_rotation:Vector3
 func enter() -> void:
 	super()
 	timeout = false
-	timer.wait_time = randi_range(1, 4)
+	timer.wait_time = randf_range(1, 4)
 	timer.start()
 	parent.nav.set_target_position(parent.global_position)
 	parent.anim_player.stop()

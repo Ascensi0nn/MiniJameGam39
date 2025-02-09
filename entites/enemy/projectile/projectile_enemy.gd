@@ -11,7 +11,8 @@ var player:Player
 var gem1:PackedScene = preload("res://world_objects/other/GemBlue.tscn")
 var gem2:PackedScene = preload("res://world_objects/other/GemGreen.tscn")
 var gem3:PackedScene = preload("res://world_objects/other/GemPink.tscn")
-var pickup_arr = [gem1, gem2, gem3]
+var health:PackedScene = preload("res://world_objects/other/Health.tscn")
+var pickup_arr = [gem1, gem2, gem3, health]
 
 @export var walk_spd = 3
 @export var walk_acc = 10
@@ -46,7 +47,7 @@ func die():
 	GameManager.add_score()
 	# drop gem
 	var pickup = pickup_arr[randi_range(0, len(pickup_arr) - 1)].instantiate()
-	get_tree().get_root().add_child(pickup)
+	get_tree().root.add_child(pickup)
 	pickup.global_position = self.global_position
 	pickup.apply_impulse(10 * Vector3(0, 1, 0))
 	

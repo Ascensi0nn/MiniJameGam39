@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dfgtqmaxn0ri4"]
+[gd_scene load_steps=34 format=3 uid="uid://dfgtqmaxn0ri4"]
 
 [ext_resource type="PackedScene" uid="uid://db0hscg52uxbs" path="res://world_objects/ocean/Water.tscn" id="1_l3w3y"]
 [ext_resource type="Texture2D" uid="uid://cjxwiad40fygp" path="res://world_objects/island/Ground061_1K-JPG_Color.jpg" id="2_6fxab"]
@@ -17,8 +17,9 @@
 [ext_resource type="PackedScene" uid="uid://deu18h4iut4q1" path="res://worlds/Island/Gold ore.glb" id="15_4vl8r"]
 [ext_resource type="PackedScene" uid="uid://ek2pjs0fwiy5" path="res://world_objects/BreakableBarrel.tscn" id="16_72as8"]
 [ext_resource type="PackedScene" uid="uid://phtn6kctu34r" path="res://world_objects/MoveableBucket.tscn" id="17_4vl8r"]
+[ext_resource type="PackedScene" uid="uid://bx61uyq5rkt8q" path="res://world_objects/other/Health.tscn" id="18_4vl8r"]
 
-[sub_resource type="Shader" id="Shader_o08eu"]
+[sub_resource type="Shader" id="Shader_4vl8r"]
 code = "
 // NOTE: Shader automatically converted from Godot Engine 4.4.beta1's PanoramaSkyMaterial.
 
@@ -33,16 +34,16 @@ void sky() {
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uvspo"]
-shader = SubResource("Shader_o08eu")
+shader = SubResource("Shader_4vl8r")
 shader_parameter/source_panorama = ExtResource("6_6fxab")
 shader_parameter/exposure = 1.0
 
-[sub_resource type="Sky" id="Sky_s75ll"]
+[sub_resource type="Sky" id="Sky_lo88p"]
 sky_material = SubResource("ShaderMaterial_uvspo")
 
 [sub_resource type="Environment" id="Environment_opy3v"]
 background_mode = 2
-sky = SubResource("Sky_s75ll")
+sky = SubResource("Sky_lo88p")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nftsn"]
 shader = ExtResource("7_opy3v")
@@ -98,6 +99,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_m0r10"]
 resource_name = "Revolve"
 length = 60.0
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -136,7 +138,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="Shader"]
 unique_name_in_owner = true
@@ -148,7 +150,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 2
 script = ExtResource("8_26f4i")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
@@ -521,3 +523,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.3138, 2.27837, -78.2354)
 
 [node name="MoveableBucket" parent="." instance=ExtResource("17_4vl8r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 53.8638, 1.4565, -81.224)
+
+[node name="Health" parent="." instance=ExtResource("18_4vl8r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4065, 5.1347, -22.987)

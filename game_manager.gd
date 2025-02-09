@@ -8,19 +8,41 @@ var player_max_health:int = 3
 var player_current_health:int
 
 func _ready():
-	reset()
-	
-func reset():
 	player_score = 0
 	pirate_speed = 5.0
 	player_current_health = player_max_health
+	
+	await get_tree().create_timer(1).timeout
 	
 	self.add_child(pirate_timer)
 	pirate_timer.wait_time = 1
 	pirate_timer.connect("timeout", add_pirate_speed)
 	pirate_timer.start()
-	# reset timer
-	# reload scene
+	
+func reset():
+	clear_scene()
+	get_tree().reload_current_scene()
+	
+func clear_scene():
+	Engine.time_scale = 1
+	for enemy in get_tree().get_nodes_in_group("Enemy"):
+		enemy.queue_free()
+	
+	for projectile in get_tree().get_nodes_in_group("Projectile"):
+		projectile.queue_free()
+		
+	for pickup in get_tree().get_nodes_in_group("Pickup"):
+		pickup.queue_free()
+		
+	for player in get_tree().get_nodes_in_group("Player"):
+		player.queue_free()
+		
+	player_score = 0
+	pirate_speed = 5.0
+	player_current_health = player_max_health
+	
+	await get_tree().create_timer(1).timeout
+	pirate_timer.start()
 
 func add_pirate_speed() -> void:
 	if pirate_speed >= 0.1:
@@ -33,7 +55,6 @@ func add_score() -> void:
 	player_score += 1
 	
 func get_score() -> int:
-	print(player_score)
 	return player_score
 	
 func add_health() -> void:

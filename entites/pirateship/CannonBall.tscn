@@ -19,7 +19,7 @@ radius = 0.655
 [sub_resource type="SphereShape3D" id="SphereShape3D_0lpj5"]
 radius = 6.4
 
-[node name="RigidBody3D" type="RigidBody3D"]
+[node name="RigidBody3D" type="RigidBody3D" groups=["Projectile"]]
 gravity_scale = 0.5
 script = ExtResource("1_0lpj5")
 

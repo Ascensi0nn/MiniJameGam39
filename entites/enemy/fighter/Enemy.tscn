@@ -4126,7 +4126,7 @@ script = ExtResource("2_vrfwx")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.275419, 0)
 shape = SubResource("SphereShape3D_wi116")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." groups=["Enemy"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.968764, 0)
 shape = SubResource("CapsuleShape3D_1mng2")
 
